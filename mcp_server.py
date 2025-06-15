@@ -10,7 +10,7 @@ mcp = FastMCP("virt-xml-validate")
 
 
 @mcp.tool()
-def validate_libvirt_xml(session_id, xml_string: str) -> dict:
+def virt_xml_validate(session_id, xml_string: str) -> dict:
     """
     Validates a libvirt XML string using virt-xml-validate.
     Returns the result of the validation.
