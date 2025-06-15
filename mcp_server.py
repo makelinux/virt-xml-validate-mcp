@@ -4,14 +4,14 @@ import os
 import tempfile
 import subprocess
 
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 
 mcp = FastMCP("mcp-server")
 
 
 
 @mcp.tool()
-async def validate_libvirt_xml(xml_string: str) -> dict:
+def validate_libvirt_xml(session_id, xml_string: str) -> dict:
     """
     Validates a libvirt XML string using virt-xml-validate.
     Returns the result of the validation.
@@ -37,4 +37,4 @@ async def validate_libvirt_xml(xml_string: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run(transport=os.environ.get("MCP_TRANSPORT", "stdio"))
+    mcp.run(transport="sse", port=3002)
