@@ -6,8 +6,7 @@ import subprocess
 
 from fastmcp import FastMCP
 
-mcp = FastMCP("mcp-server")
-
+mcp = FastMCP("virt-xml-validate")
 
 
 @mcp.tool()
