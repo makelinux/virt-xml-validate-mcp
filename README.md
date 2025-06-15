@@ -1,3 +1,27 @@
+# virt-xml-validate MCP
+
+In the first terminal start ollama and llama-stack:
+
+```shell
+
+export INFERENCE_MODEL=llama3.2:3b
+echo hi | ollama run $INFERENCE_MODEL --keepalive 1h
+
+uv run --with llama-stack llama stack build --template ollama --image-type venv --image-name ~/my-ollama-llama-stack --run
+```
+
+In the second terminal start MCP server:
+
+```shell
+./mcp_server.py
+```
+
+In the third terminal start MCP client based on llama-stack:
+
+```shell
+./llama-stack-client.py
+```
+
 # mcp-server template
 
 MCP (ModelContextProvider) server template
