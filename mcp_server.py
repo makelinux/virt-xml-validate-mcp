@@ -29,7 +29,7 @@ def virt_xml_validate(session_id, xml_string: str) -> dict:
         return {
             "returncode": result.returncode,
             "stdout": result.stdout,
-            "stderr": result.stderr
+            "stderr": result.stderr.replace('Relax-NG validity error :', '')
         }
     finally:
         os.remove(tmp_path)
