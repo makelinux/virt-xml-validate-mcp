@@ -9,9 +9,10 @@ from llama_stack_client.lib.agents.event_logger import EventLogger
 logging.getLogger("llama_stack_client._base_client").setLevel(logging.WARNING)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
-print('Connecting...')
-
 client = LlamaStackClient(base_url="http://localhost:8321", max_retries=20)
+print('Connecting...', end='', flush=True)
+models = client.models.list()
+print('\r\033[K', end='', flush=True)
 client.toolgroups.register(
     toolgroup_id="mcp::virt",
     provider_id="model-context-protocol",
