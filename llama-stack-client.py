@@ -3,9 +3,11 @@
 print('Loading...', end='', flush=True)
 import logging
 import os
+from llama_stack_client import RAGDocument
 from llama_stack_client import Agent, LlamaStackClient
 from llama_stack_client.types.tool_group import McpEndpoint
 from llama_stack_client.lib.agents.event_logger import EventLogger
+from llama_stack.distribution.library_client import LlamaStackAsLibraryClient
 print('\r\033[KLoaded')
 
 logging.getLogger("llama_stack_client._base_client").setLevel(logging.WARNING)
@@ -37,6 +39,45 @@ client.toolgroups.register(
 )
 tools+=["mcp::virt"]
 
+def rag(sources):
+    embedding_model_id = (
+        em := next(m for m in models if m.model_type == "embedding")
+    ).identifier
+
+    documents = []
+    for i, s in enumerate(sources):
+        print("rag_tool> Ingesting document:", s)
+        documents += [ RAGDocument(document_id=f"doc-{i}",
+                                   content=s,
+                                   mime_type="text/plain",
+                                   metadata={},
+                                   )
+                      ]
+
+    vector_db_id = "my_demo_vector_db"
+    _ = client.vector_dbs.register(
+        vector_db_id=vector_db_id,
+        embedding_model=embedding_model_id,
+        embedding_dimension= em.metadata["embedding_dimension"],
+        provider_id="faiss",
+    )
+    client.tool_runtime.rag_tool.insert(
+        documents=documents,
+        vector_db_id=vector_db_id,
+        chunk_size_in_tokens=512,
+    )
+    global tools
+    tools+=[{ "name": "builtin::rag/knowledge_search", "args": {"vector_db_ids": [vector_db_id]}}]
+
+    if True:
+        results = client.tool_runtime.rag_tool.query(
+            vector_db_ids=[vector_db_id],
+            #content="How objects in the libvirt API are configured?",
+            content="What are the key topics in the documents?",
+            )
+        print(results)
+
+rag(["https://libvirt.org/format.html"])#, "https://libvirt.org/formatdomain.html"])
 
 agent = Agent(
     client,
