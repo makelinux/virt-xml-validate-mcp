@@ -28,6 +28,7 @@ except:
 
 tools=[]
 
+# llama-stack-client toolgroups register mcp::virt --provider-id model-context-protocol --mcp-endpoint http://0.0.0.0:3002/sse --args
 client.toolgroups.register(
     toolgroup_id="mcp::virt",
     provider_id="model-context-protocol",
