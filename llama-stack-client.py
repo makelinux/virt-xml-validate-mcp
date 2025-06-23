@@ -26,18 +26,22 @@ except:
     models = client.models.list()
     print('Using library')
 
+tools=[]
+
 client.toolgroups.register(
     toolgroup_id="mcp::virt",
     provider_id="model-context-protocol",
     #mcp_endpoint=McpEndpoint(uri="http://0.0.0.0:3002/sse"),
     mcp_endpoint=McpEndpoint(uri="http://0.0.0.0:3002/sse"),
 )
+tools+=["mcp::virt"]
+
 
 agent = Agent(
     client,
     model=os.getenv('INFERENCE_MODEL', 'llama3.2:3b'),
     instructions="""You are a helpful assistant that can use tools to answer questions.""",
-    tools=["mcp::virt"]
+    tools=tools
 )
 
 user_prompts = [
