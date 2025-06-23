@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+print('Loading...', end='', flush=True)
 import logging
 import os
 from llama_stack_client import Agent, LlamaStackClient
 from llama_stack_client.types.tool_group import McpEndpoint
 from llama_stack_client.lib.agents.event_logger import EventLogger
+print('\r\033[KLoaded')
 
 logging.getLogger("llama_stack_client._base_client").setLevel(logging.WARNING)
 logging.getLogger("httpx").setLevel(logging.WARNING)
