@@ -91,7 +91,7 @@ user_prompts = [
        "Validate libvirt XML: '<domain type='kvm'>  </domain>'",
         ]
 
-session_id = agent.create_session("demo-session")
+session_id = agent.create_session("mcp::virt")
 
 for prompt in user_prompts:
     print()
