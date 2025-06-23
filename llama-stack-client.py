@@ -11,10 +11,21 @@ print('\r\033[KLoaded')
 logging.getLogger("llama_stack_client._base_client").setLevel(logging.WARNING)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
-client = LlamaStackClient(base_url="http://localhost:8321", max_retries=20)
-print('Connecting...', end='', flush=True)
-models = client.models.list()
-print('\r\033[K', end='', flush=True)
+client = None
+
+try:
+    #client = LlamaStackClient(base_url="http://localhost:8321", timeout=300, max_retries=20)
+    client = LlamaStackClient(base_url="http://localhost:8321")
+    print('Connecting...', end='', flush=True)
+    models = client.models.list()
+    print('\r\033[K', end='', flush=True)
+except:
+    client = LlamaStackAsLibraryClient("ollama")
+    print('\r\033[K', end='', flush=True)
+    client.initialize()
+    models = client.models.list()
+    print('Using library')
+
 client.toolgroups.register(
     toolgroup_id="mcp::virt",
     provider_id="model-context-protocol",
